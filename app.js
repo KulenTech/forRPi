@@ -2,6 +2,7 @@ var express = module.require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var fetch = require('node-fetch');
+var cmd = require('node-cmd');
 
 app.use(bodyParser.json());
 
@@ -93,6 +94,11 @@ app.post('/temp', function(req, res){
 	res.status(200).json(response);
 })
 
+
+cmd.get('sudo node readTemp.js',
+	function(err, data, stderr){
+	console.log(data);
+});
 //////////////////////////////////////////////////////////////
 
 function verifyLogin(user, pass){
