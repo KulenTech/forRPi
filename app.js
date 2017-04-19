@@ -16,7 +16,8 @@ var data = [{ 'name': 'a', 'data' : [{
 var listOfURLs = [{
     'id': 0,
     'url': '192.168.0.8',
-}]
+}];
+var temp = 0;
 
 app.listen(8000, function(req, res){
     console.log("Listening on 8000");
@@ -78,6 +79,19 @@ app.post('/add', function(req, res) {
     }
     res.status(status).json(response);
 });
+
+app.post('/tempe', function(req, res){
+	console.log(req.body);
+	temp = req.body.temperature;
+	res.status(200).json({status: true});
+})
+app.post('/temp', function(req, res){
+	console.log(temp);	
+	var response = {"temp": 0, "status" : true};
+	var status = 200;
+	response.temp = temp;
+	res.status(200).json(response);
+})
 
 //////////////////////////////////////////////////////////////
 
