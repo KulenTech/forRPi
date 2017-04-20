@@ -3,6 +3,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var fetch = require('node-fetch');
 var cmd = require('node-cmd');
+var FormData = require('form-data');
 
 app.use(bodyParser.json());
 
@@ -16,9 +17,10 @@ var data = [{ 'name': 'a', 'data' : [{
 ]}];
 var listOfURLs = [{
     'id': 0,
-    'url': '192.168.0.8',
+    'url': '192.168.102.117',
 }];
 var temp = 0;
+var ledState = true;
 
 app.listen(8000, function(req, res){
     console.log("Listening on 8000");
@@ -85,7 +87,7 @@ app.post('/tempe', function(req, res){
 	console.log(req.body);
 	temp = req.body.temperature;
 	res.status(200).json({status: true});
-})
+});
 app.post('/temp', function(req, res){
 	console.log(temp);	
 	var response = {"temp": 0, "status" : true};
@@ -94,11 +96,15 @@ app.post('/temp', function(req, res){
 	res.status(200).json(response);
 })
 
+app.post('/led', function(req, res){
+    var body = ledState?"ON": "OFF";
+    res.status(200).json({"LED": body});
+});
 
-cmd.get('sudo node readTemp.js',
+/*cmd.get('sudo node readTemp.js',
 	function(err, data, stderr){
 	console.log(data);
-});
+});*/
 //////////////////////////////////////////////////////////////
 
 function verifyLogin(user, pass){
@@ -124,26 +130,21 @@ function find(name){
     return -1;
 }
 
-function handleChangeState(x){
+function handleChangeState(x, data){
     var url = getUrl(x);
-    if(x!=-1){
-        fetch('http://' + url, {
-            method: "POST",
-            body: JSON.stringify({"nes": "radi"})
-        }).then(function(res) {
-            return res.json();
-        }).then(function(json) {
-            console.log(json);
-        });
+    if(url.type == "led"){
+        ledState = data.state;
     }
 }
 
 function getUrl(id){
     for(var i in listOfURLs){
-        if(listOfURLs[i].id === id) return listOfURLs[i].url;
+        if(listOfURLs[i].id === id) return listOfURLs[i];
     }
-    return -1;
+    return null;
 }
+
+/*
 (function () {
     fetch('http://localhost:6000/listen', {
             method: 'POST',
@@ -156,4 +157,4 @@ function getUrl(id){
             return res.json();
         }).then(function(json) {
             console.log(json);
-        })})();
+        })})();*/
