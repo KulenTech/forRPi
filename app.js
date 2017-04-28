@@ -13,7 +13,13 @@ var data = [{ 'name': 'a', 'data' : [{
     'id': 0,
     'name': 'Light control',
     'button': 'Switch light',
-},
+    'state': true
+    },{
+    'id': 1,
+    'name': 'Vent control',
+    'button': 'Switch vent',
+    'state': false,
+    }
 ]}];
 var listOfURLs = [{
     'id': 0,
@@ -21,6 +27,7 @@ var listOfURLs = [{
 }];
 var temp = 0;
 var ledState = true;
+var ventState = false;
 
 app.listen(8000, function(req, res){
     console.log("Listening on 8000");
@@ -28,7 +35,11 @@ app.listen(8000, function(req, res){
 
 app.post('/do', function(req, res){
     console.log(req.body);
-    handleChangeState({state: req.body.state});
+    var data = getId(req.body.id);
+    if(data != null){
+        data.state = req.body.state;
+    }
+    //handleChangeState({state: req.body.state});
     res.status(200).json({status: true});
 });
 
@@ -97,9 +108,17 @@ app.post('/temp', function(req, res){
 })
 
 app.post('/led', function(req, res){
+    ledState = data[0].state;
     var body = ledState?"ON": "OFF";
     res.status(200).json({"LED": body});
 });
+
+app.post('/vent', function(req, res){
+    ventState = data[1].state;
+    var body = ventState?"ON": "OFF";
+    res.status(200).json({"LED": body});
+});
+
 
 /*cmd.get('sudo node readTemp.js',
 	function(err, data, stderr){
@@ -132,14 +151,24 @@ function find(name){
 
 function handleChangeState(x, data){
     var url = getUrl(x);
-    if(url.type == "led"){
+    if(url.id === 0){
         ledState = data.state;
+    }
+    else if(url.id === 1){
+        fanState = data.state;
     }
 }
 
 function getUrl(id){
     for(var i in listOfURLs){
         if(listOfURLs[i].id === id) return listOfURLs[i];
+    }
+    return null;
+}
+
+function getId(id){
+    for(var i in listOfURLs){
+        if(data[i].id === id) return data[i];
     }
     return null;
 }
