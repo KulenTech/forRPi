@@ -45,7 +45,7 @@ app.post('/do', function(req, res){
         datap.state = req.body.state;
     }
     //handleChangeState({state: req.body.state});
-    res.status(200).json({status: true});
+    res.status(200).json({status: true, data: data});
 });
 
 app.post('/auth', function(req, res){
