@@ -40,10 +40,13 @@ app.listen(8000, function(req, res){
 
 app.post('/do', function(req, res){
     console.log(req.body);
-    var datap = getId(req.body.id);
+    var body = req.body;
+    var datap = data[0].data[req.body.id];
+    console.log(datap)
     if(datap != null){
-        datap.state = req.body.state;
+        datap.state = body.state;
     }
+    console.log(datap)
     console.log(data[0].data[1])
     data[0].data[req.body.id] = datap;
     console.log(data);
