@@ -40,9 +40,9 @@ app.listen(8000, function(req, res){
 
 app.post('/do', function(req, res){
     console.log(req.body);
-    var data = getId(req.body.id);
+    var datap = getId(req.body.id);
     if(data != null){
-        data.state = req.body.state;
+        datap.state = req.body.state;
     }
     //handleChangeState({state: req.body.state});
     res.status(200).json({status: true});
@@ -175,9 +175,9 @@ function getUrl(id){
 }
 
 function getId(id){
-    var data = data[0];
+    var datap = data[0];
     for(var i in data){
-        if(data[i].id === id) return data[i];
+        if(datap.data[i].id === id) return datap.data[i];
     }
     return null;
 }
