@@ -41,7 +41,7 @@ app.listen(8000, function(req, res){
 app.post('/do', function(req, res){
     console.log(req.body);
     var datap = getId(req.body.id);
-    if(data != null){
+    if(datap != null){
         datap.state = req.body.state;
     }
     //handleChangeState({state: req.body.state});
