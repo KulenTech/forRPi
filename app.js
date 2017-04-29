@@ -44,6 +44,9 @@ app.post('/do', function(req, res){
     if(datap != null){
         datap.state = req.body.state;
     }
+    console.log(data[0].data[1])
+    data[0].data[req.body.id] = datap;
+    console.log(data);
     //handleChangeState({state: req.body.state});
     res.status(200).json({status: true, data: data[0].data});
 });
