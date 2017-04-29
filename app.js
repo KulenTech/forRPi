@@ -19,6 +19,11 @@ var data = [{ 'name': 'a', 'data' : [{
     'name': 'Vent control',
     'button': 'Switch vent',
     'state': false,
+    }, {
+    'id': 2,
+    'name':'Pet feeder',
+    'button':'Open/close',
+    'state': false,
     }
 ]}];
 var listOfURLs = [{
@@ -108,13 +113,15 @@ app.post('/temp', function(req, res){
 })
 
 app.post('/led', function(req, res){
-    ledState = data[0].state;
+    var datap = data[0]
+    ledState = datap[0].state;
     var body = ledState?"ON": "OFF";
     res.status(200).json({"LED": body});
 });
 
 app.post('/vent', function(req, res){
-    ventState = data[1].state;
+    var datap = data[0];
+    ventState = datap[1].state;
     var body = ventState?"ON": "OFF";
     res.status(200).json({"LED": body});
 });
@@ -167,7 +174,8 @@ function getUrl(id){
 }
 
 function getId(id){
-    for(var i in listOfURLs){
+    var data = data[0];
+    for(var i in data){
         if(data[i].id === id) return data[i];
     }
     return null;
