@@ -114,14 +114,15 @@ app.post('/temp', function(req, res){
 
 app.post('/led', function(req, res){
     var datap = data[0]
-    ledState = datap[0].state;
+    ledState = datap.data[0].state;
     var body = ledState?"ON": "OFF";
     res.status(200).json({"LED": body});
 });
 
 app.post('/vent', function(req, res){
     var datap = data[0];
-    ventState = datap[1].state;
+    console.log(datap)
+    ventState = datap.data[1].state;
     var body = ventState?"ON": "OFF";
     res.status(200).json({"LED": body});
 });
