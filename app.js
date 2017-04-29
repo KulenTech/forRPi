@@ -125,6 +125,13 @@ app.post('/led', function(req, res){
     res.status(200).json({"LED": body});
 });
 
+app.post('/hranilica', function(req, res){
+    var datap = data[0]
+    hranilicaState = datap.data[2].state;
+    var body = hranilicaState?"ON": "OFF";
+    res.status(200).json({"LED": body});
+})
+
 app.post('/vent', function(req, res){
     var datap = data[0];
     console.log(datap)
